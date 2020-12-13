@@ -4,7 +4,11 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "client-install": "npm install --prefix client",
+    "start": "node server.js",
+    "server": "nodemon server.js",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "repository": {
     "type": "git",
@@ -19,5 +23,17 @@
   "bugs": {
     "url": "https://github.com/HJassar/cardality/issues"
   },
-  "homepage": "https://github.com/HJassar/cardality#readme"
+  "homepage": "https://github.com/HJassar/cardality#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "concurrently": "^5.3.0",
+    "cor": "0.0.0",
+    "cron": "^1.8.2",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-sslify": "^1.2.0",
+    "ip": "^1.1.5",
+    "mongoose": "^5.11.7",
+    "path": "^0.12.7"
+  }
 }
