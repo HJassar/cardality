@@ -1,0 +1,23 @@
+{
+  "name": "cardality",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HJassar/cardality.git"
+  },
+  "keywords": [
+    "game",
+    "card-game"
+  ],
+  "author": "CNS",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HJassar/cardality/issues"
+  },
+  "homepage": "https://github.com/HJassar/cardality#readme"
+}
