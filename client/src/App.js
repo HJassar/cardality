@@ -8,7 +8,7 @@ import './App.css';
 
 const App = () => {
     return (
-        <>
+        <div className="App">
             <Router>
                 <Header />
                 <main className='main'>
@@ -24,7 +24,7 @@ const App = () => {
                 </main>
                 <Footer />
             </Router>
-        </>
+        </div>
     );
 };
 
