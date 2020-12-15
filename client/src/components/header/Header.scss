@@ -1,0 +1,18 @@
+@import '../../variables';
+
+
+.Header{
+    color:$primary-color;
+    padding:10px;
+    
+    &_logo{
+        text-transform: uppercase;
+        font-weight: map-get($font-weights, extra-bold);
+        letter-spacing: 2px;
+        text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+        
+    }
+    
+}
+
