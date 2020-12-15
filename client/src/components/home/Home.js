@@ -4,8 +4,10 @@ import { Link } from 'react-router-dom';
 const Home = () => {
     return (
         <>
-            <div>
-                <Link to="/story" id='currentStoryId'>Story 1</Link>
+            <div className='story-link'>
+                <Link to='/story' id='currentStoryId'>
+                    Story 1
+                </Link>
             </div>
         </>
     );
