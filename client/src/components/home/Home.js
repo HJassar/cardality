@@ -1,12 +1,13 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
     return (
-        <section className='Home'>
+        <>
             <div>
-                <button id='currentStoryId'>Story 1</button>
+                <Link to="/story" id='currentStoryId'>Story 1</Link>
             </div>
-        </section>
+        </>
     );
 };
 
