@@ -8,13 +8,12 @@ import './App.css';
 
 const App = () => {
     return (
-        <div className='App'>
+        <>
             <Router>
                 <Header />
                 <main className='main'>
                     <Switch>
                         <Route path='/home' component={Home} />
-                        {/* Main component needs to be created here which will house the pages: Home, Story, etc. So after it is created, place the Home and Story page components into a react-router-dom switch*/}
                         <Route path='/story' component={Story} />
                         <Route
                             render={() => {
@@ -25,7 +24,7 @@ const App = () => {
                 </main>
                 <Footer />
             </Router>
-        </div>
+        </>
     );
 };
 
