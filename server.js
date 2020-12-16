@@ -5,15 +5,34 @@ const app = express();
 const path = require('path');
 const enforce = require('express-sslify');
 const cron = require('cron').CronJob;
-const seedDB = require('./config/seed');
+
+//Models declarations
+const Card = require("./models/card");
+const Story = require("./models/story");
+
+// Config declarations
+const port = process.env.PORT || 5000;
 const ip = process.env.IP;
 const environment = process.env.NODE_ENV || 'dev';
+const db = process.env.DATABASEURL || "mongodb://localhost/cardality";
+const seedDB = require('./config/seed');
 
-const port = process.env.PORT || 5000;
-
+//Body-Parser configuration
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+//DB connection
+mongoose.connect(db, ({
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+    useCreateIndex: true
+}))
+    .then(() => { console.log("connected to" + db); })
+    .catch(err => { console.log(err.message); });
+
+
+// Special for Dev Environment
 if (environment == 'dev') {
     require('dotenv').config();
     // Simulate loading
@@ -38,6 +57,9 @@ if (environment !== 'dev') {
         res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
     });
 }
+
+// Calling the seed function
+seedDB();
 
 app.listen(port, ip, () => {
     console.log(`Server running on port ${port}...`);

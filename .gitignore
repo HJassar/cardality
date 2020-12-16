@@ -1,2 +1,8 @@
+# Dependency directories
 node_modules
+
+#environment variables file
 .env
+
+# history (back up files)
+.history
