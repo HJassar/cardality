@@ -1,0 +1,17 @@
+@import '../../variables';
+
+
+.Footer{
+    padding: 20px;
+
+    #{&}_text{
+        font-weight: weight(bold);
+    }
+
+    #{&}_text__link{
+        text-decoration: none;
+        color: $secondary-color;
+        font-weight: map-get($font-weights, extra-bold);
+    }
+
+}

@@ -9,3 +9,8 @@ $font-weights:(
     "bold": 700,
     "extra-bold":800
 );
+
+@function weight($weight-name){
+    @return map-get($font-weights, $weight-name);
+}
+
