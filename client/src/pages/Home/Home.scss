@@ -1,0 +1,14 @@
+@import '../../variables';
+
+
+.story-link{
+     display: flex;
+     justify-content: center;
+     background-color: $light;
+     width:15%;
+     margin:auto;
+     padding: 60Px;
+     border-radius: 10px;
+     box-shadow: 2px 3px 10px #888888;
+     
+}
