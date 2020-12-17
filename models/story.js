@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const storySchema = new mongoose.model(
+const storySchema = new mongoose.Schema(
     {
         name: String,
         cards: [
@@ -14,3 +14,5 @@ const storySchema = new mongoose.model(
     },
     { timestamps: true }
 )
+
+module.exports = mongoose.model("Story", storySchema);
