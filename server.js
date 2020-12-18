@@ -10,6 +10,12 @@ const cron = require('cron').CronJob;
 const Card = require("./models/card");
 const Story = require("./models/story");
 
+//Routes declarations
+const storiesRouter = require("./routes/stories");
+const cardsRouter = require("./routes/cards");
+
+app.use(storiesRouter);
+
 // Config declarations
 const port = process.env.PORT || 5000;
 const ip = process.env.IP;

@@ -55,6 +55,10 @@ const cards = [
     { text: "So at the end of the class she thought she had taken 11 books from me." }
 ];
 
+const stories = [
+    { "name": "Story 1" }
+];
+
 const seedDB = () => {
     Card.countDocuments({}, (err, count) => {
         if (err) { console.log(err); }
@@ -64,9 +68,14 @@ const seedDB = () => {
                 else { console.log("Old stories has been deleted!"); }
             });
             try {
-                for (let card of cards) {
+                for (const card of cards) {
                     Card.create(card, (err, addedCard) => {
-                        console.log(addedCard._id + "cards has been created!");
+                        console.log(addedCard._id + " card has been created!");
+                    });
+                }
+                for (const story of stories) {
+                    Story.create(story, (err, addedStory) => {
+                        console.log(addedStory._id + " story has been created!");
                     });
                 }
             }
