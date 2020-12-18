@@ -5,11 +5,11 @@ import './Home.scss';
 const Home = () => {
     return (
         <>
-            <div className='story-link'>
-                <Link to='/story' id='currentStoryId'>
-                    Story 1
-                </Link>
-            </div>
+            <Link to='/story' id='currentStoryId'>
+                <div className='story-link'>
+                    <h3>Story 1</h3>
+                </div>
+            </Link>
         </>
     );
 };
