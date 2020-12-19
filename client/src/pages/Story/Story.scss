@@ -1,0 +1,19 @@
+@import '../../variables';
+
+.Story_name{
+    text-align: center;
+    color:$dark;
+    font-weight: weight(bold);
+}
+
+.Story_button{
+    width:200px;
+    padding:15px;
+    margin-top: 10px;
+    border-radius: 10px;
+    background-color: $primary-color;
+    border: none;
+    color: white;
+    font-weight: weight(bold);
+    cursor: pointer;
+}

@@ -5,8 +5,8 @@ import './Home.scss';
 const Home = () => {
     return (
         <>
-            <Link to='/story' id='currentStoryId'>
-                <div className='story-link'>
+            <Link to='/story' id='currentStoryId' className='Story_link'>
+                <div className='Story_card'>
                     <h3>Story 1</h3>
                 </div>
             </Link>
