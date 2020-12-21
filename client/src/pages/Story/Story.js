@@ -49,6 +49,15 @@ const Story = ({ currentStoryId, currentPage }) => {
       {
         text: "Lorem lorem lorem lorem",
       },
+      {
+        text: "Lorem lorem lorem lorem",
+      },
+      {
+        text: "Lorem lorem lorem lorem",
+      },
+      {
+        text: "Lorem lorem lorem lorem",
+      },
     ],
   };
   //LOAD 10 cards at a time
