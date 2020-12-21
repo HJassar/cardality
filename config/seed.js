@@ -1,4 +1,6 @@
+const { forEach } = require('async');
 const mongoose = require('mongoose');
+const { resolve } = require('path');
 const Card = require("../models/card.js");
 const Story = require("../models/story.js");
 
@@ -55,37 +57,37 @@ const cards = [
     { text: "So at the end of the class she thought she had taken 11 books from me." }
 ];
 
-const stories = [
-    { "name": "Story 1" }
-];
+const story = { "name": "Story 1" };
 
-const seedDB = () => {
-    Card.countDocuments({}, (err, count) => {
-        if (err) { console.log(err); }
-        else if (count === 0) {
-            Story.deleteMany({}, (err) => {
-                if (err) { console.log(err); }
-                else { console.log("Old stories has been deleted!"); }
-            });
-            try {
-                for (const card of cards) {
-                    Card.create(card, (err, addedCard) => {
-                        console.log(addedCard._id + " card has been created!");
-                    });
-                }
-                for (const story of stories) {
-                    Story.create(story, (err, addedStory) => {
-                        console.log(addedStory._id + " story has been created!");
-                    });
-                }
+const createCards = async (cb) => {
+    const cardsArray = [];
+    for (let i = 0; i < cards.length; i++) {
+        await Card.create(cards[i], (err, newCard) => {
+            console.log("card created")
+            cardsArray.push(newCard)
+            if (i == cards.length - 1) {
+                cb(cardsArray);
             }
-            catch (err) {
-                console.log(err);
-            }
-        } else {
-            console.log('The database is not empty! Seeding has been skipped...')
-        }
+        });
+    }
+}
+
+const seedDB = async () => {
+    const storiesPresent = await Story.countDocuments({})>0;
+    if (!storiesPresent){
+    await Card.deleteMany({});
+    await Story.deleteMany({});
+
+    createCards((cardsArray) => {
+        Story.create(story,(err,newStory)=>{
+            cardsArray.map(c=>newStory.cards.push(c._id));
+            console.log(cardsArray[0]);
+            newStory.save();
+        })
     });
+}else{
+    console.log("No need to seed")
+}
 }
 
 module.exports = seedDB;

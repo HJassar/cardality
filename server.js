@@ -14,7 +14,7 @@ const Story = require("./models/story");
 const storiesRouter = require("./routes/stories");
 const cardsRouter = require("./routes/cards");
 
-app.use(storiesRouter);
+app.use('/stories',storiesRouter);
 
 // Config declarations
 const port = process.env.PORT || 5000;
