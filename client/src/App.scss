@@ -4,6 +4,7 @@
 @import './variables';
 
 
+
 .App{
     font-family: 'Nanum Gothic', sans-serif;
     display:flex;
@@ -16,6 +17,19 @@
 
 .main{
     flex-grow:1;
-    width:100%;
-    
+}
+
+.Story_card{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color:$dark;
+    background-color: $light;
+    width:200px;
+    height:150px;
+    margin:auto;
+    margin-top: 10px;
+    border-radius: 10px;
+    box-shadow: 2px 3px 10px #888888;
+
 }

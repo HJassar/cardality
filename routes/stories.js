@@ -3,8 +3,10 @@ const router = express.Router();
 const Story = require("../models/story");
 const Card = require("../models/card");
 
+// Router = Stories
+
 //Show all stories
-router.get('/home', (req, res) => {
+router.get('/', (req, res) => {
     Story.find({}, (err, allStories) => {
         if (err) console.log(err);
         else {
@@ -16,5 +18,46 @@ router.get('/home', (req, res) => {
         }
     });
 });
+
+// Show a story
+router.get('/:storyId', async (req, res) => {
+    const storyId = req.params.storyId;
+    const currentPage = req.query.page || 1;
+
+    Story.findById(storyId, (err, currentStory) => {
+        if (err) { return console.log(err); }
+
+        const numberOfCards = currentStory.cards.length;
+        const cardsPerPage = 10;
+        const numberOfPages = (numberOfCards % cardsPerPage > 0) ?
+            Math.floor(numberOfCards / cardsPerPage + 1) :
+            Math.floor(numberOfCards / cardsPerPage);
+        console.log(numberOfPages)
+
+        const requestedCardIds = (currentPage < numberOfPages) ?
+            [...currentStory.cards].slice(cardsPerPage * (currentPage - 1), cardsPerPage * currentPage) :
+            [...currentStory.cards].slice(cardsPerPage * (currentPage - 1))
+
+        const requestedCards = []
+
+        // console.log(requestedCardIds);
+
+        async function pullTheText(cb){
+        for (let i = 0; i < requestedCardIds.length; i++) {
+            await Card.findById(requestedCardIds[i], (err, card) => {
+                requestedCards.push(card.text)
+            })
+            if(i==requestedCardIds.length-1){cb()}
+        }
+    }
+
+        pullTheText(()=>{
+            res.send(requestedCards)
+        })
+
+    }).then(requestedCards=>{
+        console.log(requestedCards);
+    })
+})
 
 module.exports = router;

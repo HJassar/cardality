@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import axios from "axios";
+import './Story.scss';
+
 
 const Story = ({ currentStoryId, currentPage }) => {
   useEffect(() => {
@@ -66,14 +68,14 @@ const Story = ({ currentStoryId, currentPage }) => {
   };
   return (
     <div className="Story">
-      <h1>{TEMPSTORY.name}</h1>
+      <h1 className="Story_name">{TEMPSTORY.name}</h1>
       <div>
         <ul>
           {TEMPSTORY.cards.map((card) => {
-            return <li>{card.text}</li>;
+            return <li className="Story_card">{card.text}</li>;
           })}
         </ul>
-        <button onClick={handleClick}>LOAD MORE</button>
+        <button className="Story_button" onClick={handleClick}>LOAD MORE</button>
       </div>
     </div>
   );
