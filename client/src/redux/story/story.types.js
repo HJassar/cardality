@@ -1,7 +1,7 @@
 const StoryActionTypes = {
-  // SET_QUIZ_DATA: 'SET_QUIZ_DATA',
-  // SET_RESULT: 'SET_RESULT',
-  // CLEAR_QUIZ: 'CLEAR_QUIZ'
+  ADD_CARDS: "ADD_CARDS",
+  CHANGE_PAGE: "CHANGE_PAGE",
+  SET_STORY_NAME: "SET_STORY_NAME",
 };
 
 export default StoryActionTypes;

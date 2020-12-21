@@ -1,81 +1,74 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
+import {
+  setStoryName,
+  addCards,
+  changePage,
+} from "../../redux/story/story.actions";
 import axios from "axios";
-import './Story.scss';
+import "./Story.scss";
 
-
-const Story = ({ currentStoryId, currentPage }) => {
-  useEffect(() => {
-    //temp route to grab id, later this ID will be accessed from the Redux State "currentStoryId", which will be set from the home page when you click on the available stories.
+const Story = ({
+  currentStoryId,
+  nextStoryPage,
+  currentStoryName,
+  currentStoryCards,
+  setStoryName,
+  addCards,
+  changePage,
+}) => {
+  const pullCards = () => {
+    //refactor card pulling once able to access currentStoryId from state
     axios
-      .get(`/home`)
+      .get(`/stories`)
       .then((res) => {
-        console.log("STORY ID TESTER: ", res.data[0]);
-        setStory(res.data[0]);
+        //Axios call to pull the right story and page number. Story ID should be passed into the redux currentStoryId state from the home page component. currentPage defaults to 1.
+        setStoryName(res.data[0].name);
+        axios
+          //Change later to currentStoryId and remove first axios call
+          .get(`/stories/${res.data[0].storyId}?page=${nextStoryPage}`)
+          .then((res) => {
+            //Refactor later into a batch of cards instead of individual. Had a bug where it was putting all the text in a single <li></li>.
+            for (let card of res.data) {
+              addCards(card);
+            }
+            //Increase the page by 1
+            changePage(1);
+          })
+          .catch((err) => console.log(err.message));
       })
       .catch((err) => console.log(err.message));
+  };
+  useEffect(() => {
+    //Once page loads, initial pull of cards
+    if (nextStoryPage === 1) {
+      pullCards();
+    }
   }, []);
 
-  const [story, setStory] = useState([]);
-  //Axios call to pull the right story and page number, changing this if needed once backend is setup. Story ID should be passed into the redux currentStoryId state from the home page component. currentPage defaults to 1.
-  // axios
-  //   .get(`/story?id=${currentStoryId}&page=${currentPage}`)
-  //   .then((res) => {
-  //     console.log(res);
-  //     setStory(res);
-  //   })
-  //   .catch((err) => console.log(err.message));
-  // TEMPORARY DATA UNTIL BACKEND IS SETUP, use "story" instead of "TEMPSTORY"
-  const TEMPSTORY = {
-    id: 1,
-    name: "Story 1",
-    cards: [
-      {
-        text: "Lorem lorem lorem lorem",
-      },
-      {
-        text: "Lorem lorem lorem lorem",
-      },
-      {
-        text: "Lorem lorem lorem lorem",
-      },
-      {
-        text: "Lorem lorem lorem lorem",
-      },
-      {
-        text: "Lorem lorem lorem lorem",
-      },
-      {
-        text: "Lorem lorem lorem lorem",
-      },
-      {
-        text: "Lorem lorem lorem lorem",
-      },
-      {
-        text: "Lorem lorem lorem lorem",
-      },
-      {
-        text: "Lorem lorem lorem lorem",
-      },
-      {
-        text: "Lorem lorem lorem lorem",
-      },
-    ],
-  };
   //LOAD 10 cards at a time
   const handleClick = () => {
     //Logic for handling loading more feature
+    pullCards();
   };
   return (
     <div className="Story">
-      <h1 className="Story_name">{TEMPSTORY.name}</h1>
+      <h1 className="Story_name">{currentStoryName}</h1>
       <div>
         <ul>
-          {TEMPSTORY.cards.map((card) => {
-            return <li className="Story_card">{card.text}</li>;
-          })}
+          {currentStoryCards
+            ? currentStoryCards.map((card, index) => {
+                return (
+                  <li className="Story_card" key={index}>
+                    {card}
+                  </li>
+                );
+              })
+            : null}
         </ul>
-        <button className="Story_button" onClick={handleClick}>LOAD MORE</button>
+        <button className="Story_button" onClick={handleClick}>
+          LOAD MORE
+        </button>
       </div>
     </div>
   );
@@ -83,7 +76,15 @@ const Story = ({ currentStoryId, currentPage }) => {
 
 const mapStateToProps = (state) => ({
   currentStoryId: state.story.currentStoryId,
-  currentPage: state.story.currentPage,
+  nextStoryPage: state.story.nextStoryPage,
+  currentStoryName: state.story.currentStoryName,
+  currentStoryCards: state.story.currentStoryCards,
 });
 
-export default connect(mapStateToProps)(Story);
+const mapDispatchToProps = (dispatch) => ({
+  setStoryName: (name) => dispatch(setStoryName(name)),
+  addCards: (cards) => dispatch(addCards(cards)),
+  changePage: (value) => dispatch(changePage(value)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Story);
