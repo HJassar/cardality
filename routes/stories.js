@@ -55,8 +55,6 @@ router.get('/:storyId', async (req, res) => {
             res.send(requestedCards)
         })
 
-    }).then(requestedCards=>{
-        console.log(requestedCards);
     })
 })
 
