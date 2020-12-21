@@ -65,8 +65,6 @@ router.get("/:storyId", async (req, res) => {
     pullTheText(() => {
       res.send(requestedCards);
     });
-  }).then((requestedCards) => {
-    console.log(requestedCards);
   });
 });
 
