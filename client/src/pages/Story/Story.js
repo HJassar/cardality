@@ -1,11 +1,16 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+
 import { connect } from "react-redux";
 import {
   setStoryName,
   addCards,
   changePage,
 } from "../../redux/story/story.actions";
+
 import axios from "axios";
+
+import Loader from "react-loader-spinner";
+
 import "./Story.scss";
 
 const Story = ({
@@ -17,7 +22,11 @@ const Story = ({
   addCards,
   changePage,
 }) => {
+  const [cardsLoading, setCardsLoading] = useState(false);
+  const [maxCards, setMaxCards] = useState(0);
+
   const pullCards = () => {
+    setCardsLoading(true);
     //refactor card pulling once able to access currentStoryId from state
     axios
       .get(`/stories`)
@@ -29,11 +38,14 @@ const Story = ({
           .get(`/stories/${res.data[0].storyId}?page=${nextStoryPage}`)
           .then((res) => {
             //Refactor later into a batch of cards instead of individual. Had a bug where it was putting all the text in a single <li></li>.
-            for (let card of res.data) {
+            for (let card of res.data.requestedCards) {
               addCards(card);
             }
             //Increase the page by 1
             changePage(1);
+            setMaxCards(res.data.numberOfCards);
+            setCardsLoading(false);
+            console.log(res);
           })
           .catch((err) => console.log(err.message));
       })
@@ -66,9 +78,25 @@ const Story = ({
               })
             : null}
         </ul>
-        <button className="Story_button" onClick={handleClick}>
-          LOAD MORE
-        </button>
+        {currentStoryCards.length !== maxCards ? (
+          !cardsLoading ? (
+            <div>
+              <button className="Story_button" onClick={handleClick}>
+                LOAD MORE
+              </button>
+            </div>
+          ) : (
+            <div>
+              <Loader
+                className="Story__loader"
+                type="ThreeDots"
+                timeout={3000} //3 secs
+              />
+            </div>
+          )
+        ) : (
+          <div>END OF STORY</div>
+        )}
       </div>
     </div>
   );
