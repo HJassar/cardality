@@ -19,7 +19,7 @@ const storyReducer = (state = INITIAL_STATE, action) => {
     case StoryActionTypes.ADD_CARDS:
       return {
         ...state,
-        currentStoryCards: [...state.currentStoryCards, action.payload],
+        currentStoryCards: [...state.currentStoryCards, ...action.payload],
       };
     case StoryActionTypes.CHANGE_PAGE:
       return {
