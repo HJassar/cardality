@@ -17,6 +17,7 @@
 
 .main{
     flex-grow:1;
+    
 }
 
 .Story_card{
@@ -26,7 +27,8 @@
     color:$dark;
     background-color: $light;
     width:200px;
-    height:150px;
+    min-height:50px;
+    height:fit-content;
     margin:auto;
     margin-top: 20px;
     border-radius: 10px;
