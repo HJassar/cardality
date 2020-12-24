@@ -31,9 +31,9 @@ const Home = ({ setStoryId, setStoryName }) => {
     <>
       {storyArr.map((story) => {
         return (
-          <Link to={`/story/${story.storyId}`} className="Story_link">
+          <Link to={`/story/${story.storyId}`} className="story-link">
             <h3
-              className="Story_card"
+              className="story-title"
               key={story.storyId}
               onClick={handleClick}
               data-id={story.storyId}

@@ -65,9 +65,12 @@ const Story = ({match,
           {currentStoryCards
             ? currentStoryCards.map((card, index) => {
                 return (
-                  <li className="Story_card" key={index}>
+                  // <li className="Story_card" key={index}>
+                  <>
                     {card}
-                  </li>
+                  </>
+                  // </li>
+
                 );
               })
             : null}
@@ -75,7 +78,7 @@ const Story = ({match,
         {currentStoryCards.length !== maxCards ? (
           !cardsLoading ? (
             <div>
-              <button className="Story_button" onClick={handleClick}>
+              <button className="Story__load-more" onClick={handleClick}>
                 LOAD MORE
               </button>
             </div>

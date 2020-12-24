@@ -20,13 +20,12 @@
     
 }
 
-.Story_card{
-    display: flex;
+.block{
     align-items: center;
-    justify-content: center;
     color:$dark;
     background-color: $light;
-    width:200px;
+    width:100%;
+    max-width: 480px;
     min-height:50px;
     height:fit-content;
     margin:auto;
