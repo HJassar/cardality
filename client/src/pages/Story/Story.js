@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+
 import { connect } from "react-redux";
 import {
   setStoryName,
@@ -8,8 +9,7 @@ import {
 import axios from "axios";
 import "./Story.scss";
 
-const Story = ({
-  currentStoryId,
+const Story = (props,{
   nextStoryPage,
   currentStoryName,
   currentStoryCards,
@@ -17,6 +17,11 @@ const Story = ({
   addCards,
   changePage,
 }) => {
+  
+  
+  const storyId = props.match.params.id;
+
+
   const pullCards = () => {
     //refactor card pulling once able to access currentStoryId from state
     axios

@@ -14,7 +14,9 @@ const App = () => {
                 <main className='main'>
                     <Switch>
                         <Route exact path='/' component={Home} />
-                        <Route path='/story' component={Story} />
+                        <Route
+                            path='/story/:id'
+                            component={Story} />
                         <Route
                             render={() => {
                                 return <h4>Oh No! You got a 404 error!</h4>;
