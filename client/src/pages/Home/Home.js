@@ -1,18 +1,56 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+
+import axios from "axios";
+
+import { connect } from "react-redux";
+import { setStoryName, setStoryId } from "../../redux/story/story.actions";
+
 import { Link } from "react-router-dom";
 import "./Home.scss";
 
-const Home = () => {
-  //David, be sure to set the currentStoryName in addition to the currentStoryId when you do the Redux portion. -Paul
+const Home = ({ setStoryId, setStoryName }) => {
+  const [storyArr, setStoryArr] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("/stories")
+      .then((res) => {
+        setStoryArr(res.data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
+  const handleClick = (e) => {
+    const id = e.target.dataset.id;
+    const name = e.target.dataset.name;
+    setStoryId(id);
+    setStoryName(name);
+  };
+
   return (
     <>
-      <Link to="/story" id="currentStoryId" className="Story_link">
-        <div className="Story_card">
-          <h3>Story 1</h3>
-        </div>
+      <Link to="/story" className="Story_link">
+        {storyArr.map((story) => {
+          return (
+            <h3
+              className="Story_card"
+              key={story.storyId}
+              onClick={handleClick}
+              data-id={story.storyId}
+              data-name={story.name}
+            >
+              {story.name}
+            </h3>
+          );
+        })}
       </Link>
     </>
   );
 };
 
-export default Home;
+const mapDispatchToProps = (dispatch) => ({
+  setStoryId: (id) => dispatch(setStoryId(id)),
+  setStoryName: (name) => dispatch(setStoryName(name)),
+});
+
+export default connect(null, mapDispatchToProps)(Home);
