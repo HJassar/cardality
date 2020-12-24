@@ -1,46 +1,47 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import { connect } from "react-redux";
 import {
-  setStoryName,
   addCards,
   changePage,
+  setMaxCards,
 } from "../../redux/story/story.actions";
+
 import axios from "axios";
+
+import Loader from "react-loader-spinner";
+
 import "./Story.scss";
 
-const Story = (props,{
+const Story = ({match,
+  currentStoryId,
   nextStoryPage,
   currentStoryName,
   currentStoryCards,
-  setStoryName,
   addCards,
   changePage,
+  setMaxCards,
+  maxCards,
 }) => {
   
   
-  const storyId = props.match.params.id;
+  const storyId = match.params.id;
+  console.log(storyId);
 
+  const [cardsLoading, setCardsLoading] = useState(false);
 
   const pullCards = () => {
+    setCardsLoading(true);
     //refactor card pulling once able to access currentStoryId from state
     axios
-      .get(`/stories`)
+      .get(`/stories/${currentStoryId}?page=${nextStoryPage}`)
       .then((res) => {
-        //Axios call to pull the right story and page number. Story ID should be passed into the redux currentStoryId state from the home page component. currentPage defaults to 1.
-        setStoryName(res.data[0].name);
-        axios
-          //Change later to currentStoryId and remove first axios call
-          .get(`/stories/${res.data[0].storyId}?page=${nextStoryPage}`)
-          .then((res) => {
-            //Refactor later into a batch of cards instead of individual. Had a bug where it was putting all the text in a single <li></li>.
-            for (let card of res.data) {
-              addCards(card);
-            }
-            //Increase the page by 1
-            changePage(1);
-          })
-          .catch((err) => console.log(err.message));
+        //Refactor later into a batch of cards instead of individual. Had a bug where it was putting all the text in a single <li></li>.
+        addCards(res.data.requestedCards);
+        //Increase the page by 1
+        changePage(1);
+        setMaxCards(res.data.numberOfCards);
+        setCardsLoading(false);
       })
       .catch((err) => console.log(err.message));
   };
@@ -71,9 +72,25 @@ const Story = (props,{
               })
             : null}
         </ul>
-        <button className="Story_button" onClick={handleClick}>
-          LOAD MORE
-        </button>
+        {currentStoryCards.length !== maxCards ? (
+          !cardsLoading ? (
+            <div>
+              <button className="Story_button" onClick={handleClick}>
+                LOAD MORE
+              </button>
+            </div>
+          ) : (
+            <div>
+              <Loader
+                className="Story__loader"
+                type="ThreeDots"
+                timeout={3000} //3 secs
+              />
+            </div>
+          )
+        ) : (
+          <div>END OF STORY</div>
+        )}
       </div>
     </div>
   );
@@ -84,12 +101,13 @@ const mapStateToProps = (state) => ({
   nextStoryPage: state.story.nextStoryPage,
   currentStoryName: state.story.currentStoryName,
   currentStoryCards: state.story.currentStoryCards,
+  maxCards: state.story.maxCards,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  setStoryName: (name) => dispatch(setStoryName(name)),
   addCards: (cards) => dispatch(addCards(cards)),
   changePage: (value) => dispatch(changePage(value)),
+  setMaxCards: (value) => dispatch(setMaxCards(value)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Story);

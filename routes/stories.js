@@ -63,7 +63,7 @@ router.get("/:storyId", async (req, res) => {
     }
 
     pullTheText(() => {
-      res.send(requestedCards);
+      res.send({ requestedCards, numberOfCards });
     });
   });
 });

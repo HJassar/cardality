@@ -1,53 +1,56 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import axios from 'axios';
+import axios from "axios";
+import { connect } from "react-redux";
+
+
+import { setStoryName, setStoryId } from "../../redux/story/story.actions";
+
 import "./Home.scss";
 
+const Home = ({ setStoryId, setStoryName }) => {
+  const [storyArr, setStoryArr] = useState([]);
 
-const Home = () => {
+  useEffect(() => {
+    axios
+      .get("/stories")
+      .then((res) => {
+        setStoryArr(res.data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
-  let stories;
-  const [loading, setLoading] = useState(true)
+  const handleClick = (e) => {
+    const id = e.target.dataset.id;
+    const name = e.target.dataset.name;
+    setStoryId(id);
+    setStoryName(name);
+  };
 
-  const [storyDOMs, setStoryDOMs] = useState('loading');
-
-  axios
-    .get(`/stories`)
-    .then((res) => {
-      setLoading(false)
-      setStoryDOMs(
-        res.data.map(story => {
-          return (
-            <div className="Story_card">
-              <Link
-                to={`/story/${story.storyId}`}
-                className="Story_link">
-                <h2>
-                  {story.name}
-                </h2>
-              </Link>
-            </div>
-          )
-        })
-      )
-    })
-
-
-
-  //David, be sure to set the currentStoryName in addition to the currentStoryId when you do the Redux portion. -Paul
-  if (loading) {
-    return (
-      <>
-        loading
-      </>
-    )
-  }
-
-
-  return (<>
-    {storyDOMs}
-  </>)
-
+  return (
+    <>
+      {storyArr.map((story) => {
+        return (
+          <Link to={`/story/${story.storyId}`} className="Story_link">
+            <h3
+              className="Story_card"
+              key={story.storyId}
+              onClick={handleClick}
+              data-id={story.storyId}
+              data-name={story.name}
+            >
+              {story.name}
+            </h3>
+          </Link>
+        );
+      })}
+    </>
+  );
 };
 
-export default Home;
+const mapDispatchToProps = (dispatch) => ({
+  setStoryId: (id) => dispatch(setStoryId(id)),
+  setStoryName: (name) => dispatch(setStoryName(name)),
+});
+
+export default connect(null, mapDispatchToProps)(Home);

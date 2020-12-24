@@ -1,4 +1,3 @@
-import Story from "../../pages/Story/Story";
 import StoryActionTypes from "./story.types";
 
 const INITIAL_STATE = {
@@ -7,10 +6,16 @@ const INITIAL_STATE = {
   nextStoryPage: 1,
   currentStoryName: "",
   currentStoryCards: [],
+  maxCards: 0,
 };
 
 const storyReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case StoryActionTypes.SET_STORY_ID:
+      return {
+        ...state,
+        currentStoryId: action.payload,
+      };
     case StoryActionTypes.SET_STORY_NAME:
       return {
         ...state,
@@ -19,12 +24,17 @@ const storyReducer = (state = INITIAL_STATE, action) => {
     case StoryActionTypes.ADD_CARDS:
       return {
         ...state,
-        currentStoryCards: [...state.currentStoryCards, action.payload],
+        currentStoryCards: [...state.currentStoryCards, ...action.payload],
       };
     case StoryActionTypes.CHANGE_PAGE:
       return {
         ...state,
         nextStoryPage: state.nextStoryPage + action.payload,
+      };
+    case StoryActionTypes.SET_MAX_CARDS:
+      return {
+        ...state,
+        maxCards: action.payload,
       };
     default:
       return state;
