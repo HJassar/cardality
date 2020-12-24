@@ -58,19 +58,17 @@ const Story = ({match,
     pullCards();
   };
   return (
-    <div className="Story">
-      <h1 className="Story_name">{currentStoryName}</h1>
+    <>
+      <h1 className="Story__name">{currentStoryName}</h1>
       <div>
         <ul>
           {currentStoryCards
-            ? currentStoryCards.map((card, index) => {
+            ? currentStoryCards.map((cardText, index) => {
                 return (
-                  // <li className="Story_card" key={index}>
-                  <>
-                    {card}
-                  </>
-                  // </li>
-
+                  // Let's make a component for Card
+                  <div className='Card block' key={index}>
+                    {cardText}
+                  </div>
                 );
               })
             : null}
@@ -95,7 +93,7 @@ const Story = ({match,
           <div>END OF STORY</div>
         )}
       </div>
-    </div>
+    </>
   );
 };
 

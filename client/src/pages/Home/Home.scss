@@ -1,7 +1,11 @@
-@import '../../variables';
+@import "../../variables";
 
+.story-link {
+  text-decoration: none;
+  display: block;
+}
 
-.story-link{
-     text-decoration: none;
-     font-size: 1.5em;
+.story-name{
+     width: fit-content;
+     display: block;
 }

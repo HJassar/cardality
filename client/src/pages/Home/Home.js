@@ -32,15 +32,17 @@ const Home = ({ setStoryId, setStoryName }) => {
       {storyArr.map((story) => {
         return (
           <Link to={`/story/${story.storyId}`} className="story-link">
-            <h3
-              className="story-title"
-              key={story.storyId}
-              onClick={handleClick}
-              data-id={story.storyId}
-              data-name={story.name}
-            >
-              {story.name}
-            </h3>
+            <div className='block'>
+              <h2
+                className="story-name"
+                key={story.storyId}
+                onClick={handleClick}
+                data-id={story.storyId}
+                data-name={story.name}
+              >
+                {story.name}
+              </h2>
+            </div>
           </Link>
         );
       })}
