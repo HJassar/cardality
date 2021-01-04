@@ -61,12 +61,12 @@ const Story = ({match,
     <>
       <h1 className="Story__name">{currentStoryName}</h1>
       <div>
-        <ul>
+        <ul className="Story_ul">
           {currentStoryCards
             ? currentStoryCards.map((cardText, index) => {
                 return (
                   // Let's make a component for Card
-                  <div className='Card block' key={index}>
+                  <div className='Card_block' key={index}>
                     {cardText}
                   </div>
                 );
