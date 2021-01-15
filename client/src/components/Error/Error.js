@@ -1,11 +1,11 @@
-import React from 'react'
+import React from 'react';
 
-const Error = () => {
+const Error = ({errorMessage}) => {
     return (
-        <div className="error-wrapper">
-            <h4>Oh no! We hit a bug!</h4>
+        <div className='error-wrapper'>
+            <h4>{errorMessage}</h4>
         </div>
-    )
-}
+    );
+};
 
-export default Error
+export default Error;

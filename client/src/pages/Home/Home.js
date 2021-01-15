@@ -12,6 +12,7 @@ import './Home.scss';
 const Home = ({ setStoryId, setStoryName }) => {
     const [storyArr, setStoryArr] = useState([]);
     const [error, setError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('')
 
     useEffect(() => {
         axios
@@ -23,6 +24,7 @@ const Home = ({ setStoryId, setStoryName }) => {
                 if (err.response) {
                     console.log(err);
                     setError(!error)
+                    setErrorMessage(err.response.statusText)
                 }
             });
     }, []);
@@ -37,7 +39,7 @@ const Home = ({ setStoryId, setStoryName }) => {
     return (
         <>
             {error ? (
-                <Error />
+                <Error errorMessage={errorMessage} />
             ) : (
                 storyArr.map((story) => {
                     return (
