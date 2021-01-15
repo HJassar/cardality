@@ -21,11 +21,8 @@ const Home = ({ setStoryId, setStoryName }) => {
                 setStoryArr(res.data);
             })
             .catch((err) => {
-                if (err.response) {
-                    console.log(err);
                     setError(!error)
                     setErrorMessage(err.response.statusText)
-                }
             });
     }, []);
 
