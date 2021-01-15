@@ -14,7 +14,7 @@ const App = () => {
                 <main className='main'>
                     <Switch>
                         <Route exact path='/' component={Home} />
-                        <Route
+                        <Route 
                             path='/story/:id'
                             component={Story} />
                         <Route

@@ -55,6 +55,7 @@ if (environment == "dev") {
       next();
     }, loadTime);
   });
+  
   app.get("/", (req, res) => {
     res.send("This page shows in dev mode only");
   });

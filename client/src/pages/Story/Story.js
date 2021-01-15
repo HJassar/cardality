@@ -7,13 +7,17 @@ import {
   setMaxCards,
 } from "../../redux/story/story.actions";
 
+import querystring from 'query-string'
+
 import axios from "axios";
 
 import Loader from "react-loader-spinner";
 
 import "./Story.scss";
+import { useLocation } from "react-router";
 
-const Story = ({match,
+const Story = ({ match,
+  location,
   currentStoryId,
   nextStoryPage,
   currentStoryName,
@@ -23,12 +27,22 @@ const Story = ({match,
   setMaxCards,
   maxCards,
 }) => {
-  
-  
+
+
+  // Apparently using queries with react-router requires a package
+  const parsed = querystring.parse(location.search);
+  const page = parsed.page || 1;
+  console.log(page); 
+
   const storyId = match.params.id;
   console.log(storyId);
 
   const [cardsLoading, setCardsLoading] = useState(false);
+
+
+  // console.log(location.search.indexOf('page'))
+  // console.log(location.search.splice();
+
 
   const pullCards = () => {
     setCardsLoading(true);
@@ -64,14 +78,22 @@ const Story = ({match,
         <ul>
           {currentStoryCards
             ? currentStoryCards.map((cardText, index) => {
-                return (
-                  // Let's make a component for Card
-                  <div className='Card block' key={index}>
-                    {cardText}
-                  </div>
-                );
-              })
-            : null}
+              return (
+                // Let's make a component for Card
+                <div className='Card block' key={index}>
+                  {cardText}
+                </div>
+              );
+            })
+            : (
+              <div>
+                <Loader
+                  className="Story__loader"
+                  type="ThreeDots"
+                  timeout={3000} //3 secs
+                />
+              </div>
+            )}
         </ul>
         {currentStoryCards.length !== maxCards ? (
           !cardsLoading ? (
@@ -81,17 +103,17 @@ const Story = ({match,
               </button>
             </div>
           ) : (
-            <div>
-              <Loader
-                className="Story__loader"
-                type="ThreeDots"
-                timeout={3000} //3 secs
-              />
-            </div>
-          )
+              <div>
+                <Loader
+                  className="Story__loader"
+                  type="ThreeDots"
+                  timeout={3000} //3 secs
+                />
+              </div>
+            )
         ) : (
-          <div>END OF STORY</div>
-        )}
+            <div>END OF STORY</div>
+          )}
       </div>
     </>
   );
