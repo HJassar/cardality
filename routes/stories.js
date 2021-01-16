@@ -7,16 +7,14 @@ const Card = require("../models/card");
 
 //Show all stories
 router.get("/", (req, res) => {
-  Story.find({}, (err, allStories) => {
-    if (err) console.log(err);
-    else {
-      // console.log(allStories);
-      const stories = allStories.map((s) => {
-        return { storyId: s._id, name: s.name };
-      });
+  try {
+    Story.find({}, (err, allStories) => {
+      const stories = allStories.map(s => ({ storyId: s._id, name: s.name }));
       res.send(stories);
-    }
-  });
+    });
+  } catch (err) {
+    console.log("Something went wrong: ", err);
+  }
 });
 
 // Show a story
@@ -42,9 +40,9 @@ router.get("/:storyId", async (req, res) => {
     const requestedCardIds =
       currentPage < numberOfPages
         ? [...currentStory.cards].slice(
-            cardsPerPage * (currentPage - 1),
-            cardsPerPage * currentPage
-          )
+          cardsPerPage * (currentPage - 1),
+          cardsPerPage * currentPage
+        )
         : [...currentStory.cards].slice(cardsPerPage * (currentPage - 1));
 
     const requestedCards = [];
