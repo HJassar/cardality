@@ -3,17 +3,16 @@ const router = express.Router();
 const Story = require("../models/story");
 const Card = require("../models/card");
 
-// Router = Stories
+// Router = /stories
 
 //Show all stories
-router.get("/", (req, res) => {
+router.get("/", async (req, res) => {
   try {
-    Story.find({}, (err, allStories) => {
-      const stories = allStories.map(s => ({ storyId: s._id, name: s.name }));
-      res.send(stories);
-    });
+    const allStories = await Story.find({});
+    const stories = await allStories.map(s => ({ storyId: s._id, name: s.name }));
+    res.send(stories);
   } catch (err) {
-    console.log("Something went wrong: ", err);
+    console.log("Something went wrong: ", err.message);
   }
 });
 
