@@ -1,19 +1,19 @@
-$primary-color:#00A38D;
-$secondary-color:#145462;
-$dark:#707070;
-$light:#fff8EB;
-$background:#EEF8FC;
+$primary-color: #707070;
+$secondary-color: #145462;
+
+$surface: #f1e6db;
+$on-surface: #003844;
+
+$background: #003844;
 
 $box-shadow: 2px 3px 6px rgba(0, 0, 0, 0.2);
 
-
-$font-weights:(
-    "regular":400,
-    "bold": 700,
-    "extra-bold":800
+$font-weights: (
+  "regular": 400,
+  "bold": 700,
+  "extra-bold": 800,
 );
 
-@function weight($weight-name){
-    @return map-get($font-weights, $weight-name);
+@function weight($weight-name) {
+  @return map-get($font-weights, $weight-name);
 }
-

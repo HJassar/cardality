@@ -10,18 +10,11 @@ const cron = require("cron").CronJob;
 const Card = require("./models/card");
 const Story = require("./models/story");
 
-//Routes declarations
-const storiesRouter = require("./routes/stories");
-const cardsRouter = require("./routes/cards");
-
-app.use("/stories", storiesRouter);
-
 // Config declarations
 const port = process.env.PORT || 5000;
 const ip = process.env.IP;
 const environment = process.env.NODE_ENV || "dev";
 const db = process.env.DATABASEURL || "mongodb://localhost/cardality";
-const seedDB = require("./config/seed");
 
 //Body-Parser configuration
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -51,15 +44,24 @@ if (environment == "dev") {
   app.use((req, res, next) => {
     setTimeout(() => {
       loadTime = slowness * 1000 * Math.random();
-      console.log("loaded");
+      console.log('Loaded with a lag of', loadTime / 1000, 'seconds');
       next();
     }, loadTime);
   });
-  
+
   app.get("/", (req, res) => {
     res.send("This page shows in dev mode only");
   });
 }
+
+
+//Routes
+const storiesRouter = require("./routes/stories");
+const cardsRouter = require("./routes/cards");
+const adminRouter = require('./routes/admin')
+app.use('/stories', storiesRouter);
+app.use('/cards', cardsRouter);
+app.use('/admin', adminRouter);
 
 if (environment !== "dev") {
   app.use(enforce.HTTPS({ trustProtoHeader: true }));
@@ -69,9 +71,11 @@ if (environment !== "dev") {
   });
 }
 
-// Calling the seed function
-seedDB();
+require('./handlers/seed').initialSetup();
 
+
+
+// Listen
 app.listen(port, ip, () => {
   console.log(`Server running on port ${port}...`);
 });

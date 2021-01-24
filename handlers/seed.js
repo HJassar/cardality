@@ -3,8 +3,9 @@ const mongoose = require("mongoose");
 const { resolve } = require("path");
 const Card = require("../models/card.js");
 const Story = require("../models/story.js");
+const { route } = require("../routes/cards.js");
 
-const cards = [
+const cardSeeds = [
   { text: "When I was a kid, I was very mischeivious." },
   {
     text:
@@ -157,37 +158,60 @@ const cards = [
   },
 ];
 
-const story = { name: "Story 1" };
-
-const createCards = async (cb) => {
-  const cardsArray = [];
-  for (let i = 0; i < cards.length; i++) {
-    await Card.create(cards[i], (err, newCard) => {
-      console.log("card created");
-      cardsArray.push(newCard);
-      if (i == cards.length - 1) {
-        cb(cardsArray);
-      }
-    });
+const seedCards = async () => {
+  try {
+    const CardCount = await Card.countDocuments({});
+    if (CardCount > 0) {
+      throw { message: 'Cards already seeded', code: 400 }
+    } else {
+      cardSeeds.map(async (cardSeed, index) => {
+        await Card.create({ text: cardSeed.text })
+          .then(data => {
+            console.log(data._id, 'created successfully!')
+            if (index >= cardSeeds.length - 1) {
+              return console.log('All Cards seeded successfully')
+              // if (res) res.status(201).json({ sucess: 'All Cards seeded successfully' })
+            }
+          })
+      })
+    }
+  } catch (err) {
+    console.log(err)
+    // if (res) res.status(err.code).json({ error: err.message })
   }
-};
+}
 
-const seedDB = async () => {
-  const storiesPresent = (await Story.countDocuments({})) > 0;
-  if (!storiesPresent) {
-    await Card.deleteMany({});
-    await Story.deleteMany({});
+const generateStory = async () => {
+  try {
+    const randomStoryName = 'Story ' + (10000000 + Math.floor(Math.random() * 10000000))
+    const cardIds = await Card
+      .aggregate([
+        { $sample: { size: (6 + Math.floor(Math.random() * 40)) } },
+        { $project: { _id: '$_id' } }
+      ])
+    const newStory = await Story.create({ name: randomStoryName, cards: cardIds });
+    return newStory;
+  } catch (err) {
+    return console.log(err)
+    res.status(500).json({ error: err })
+  }
+}
 
-    createCards((cardsArray) => {
-      Story.create(story, (err, newStory) => {
-        cardsArray.map((c) => newStory.cards.push(c._id));
-        console.log(cardsArray[0]);
-        newStory.save();
-      });
-    });
+
+const initialSetup = async () => {
+  const cardCount = await Card.countDocuments({});
+  if (cardCount <= 0) {
+    await seedCards();
+    await Card.find({}); // This gives the DB sometime before creating the first story, otherwise the first story will be empty;
+    for (let i = 0; i < 6; i++) {
+      await generateStory()
+    }
+    return;
   } else {
-    console.log("No need to seed");
+    return console.log('Everything is already set up!')
   }
-};
 
-module.exports = seedDB;
+}
+
+
+module.exports = { generateStory, seedCards, initialSetup };
