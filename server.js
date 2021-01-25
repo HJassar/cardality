@@ -9,6 +9,7 @@ const cron = require("cron").CronJob;
 //Models declarations
 const Card = require("./models/card");
 const Story = require("./models/story");
+const User = require("./models/user");
 
 // Config declarations
 const port = process.env.PORT || 5000;
@@ -58,10 +59,12 @@ if (environment == "dev") {
 //Routes
 const storiesRouter = require("./routes/stories");
 const cardsRouter = require("./routes/cards");
-const adminRouter = require('./routes/admin')
+const adminRouter = require('./routes/admin');
+const usersRouter = require("./routes/users");
 app.use('/stories', storiesRouter);
 app.use('/cards', cardsRouter);
 app.use('/admin', adminRouter);
+app.use("/user", usersRouter);
 
 if (environment !== "dev") {
   app.use(enforce.HTTPS({ trustProtoHeader: true }));
