@@ -34,7 +34,7 @@ const Home = ({ setStoryId, setStoryName }) => {
     };
 
     return (
-        <>
+        <div className='Home'>
             {error ? (
                 <Error errorMessage={errorMessage} />
             ) : (
@@ -43,7 +43,7 @@ const Home = ({ setStoryId, setStoryName }) => {
                         <Link
                             to={`/story/${story.storyId}`}
                             className='story-link'>
-                            <div className='block'>
+                            <div className='story-link-stack block'>
                                 <h2
                                     className='story-name'
                                     key={story.storyId}
@@ -57,7 +57,7 @@ const Home = ({ setStoryId, setStoryName }) => {
                     );
                 })
             )}
-        </>
+        </div>
     );
 };
 
