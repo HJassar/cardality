@@ -21,7 +21,7 @@ router.get('/:storyId', async (req, res) => {
   const storyId = req.params.storyId;
   const story = await Story.findById(storyId);
   const pageCount = Math.ceil(story.cards.length / 6);
-  console.log(pageCount)
+  // console.log(pageCount)
   res.status(200).json({
     name: story.name,
     pageCount
@@ -48,13 +48,13 @@ router.get('/:storyId', async (req, res) => {
 //         : Math.floor(numberOfCards / cardsPerPage);
 //     console.log(numberOfPages);
 
-//     const requestedCardIds =
-//       currentPage < numberOfPages
-//         ? [...currentStory.cards].slice(
-//           cardsPerPage * (currentPage - 1),
-//           cardsPerPage * currentPage
-//         )
-//         : [...currentStory.cards].slice(cardsPerPage * (currentPage - 1));
+    // const requestedCardIds =
+    //   currentPage < numberOfPages
+    //     ? [...currentStory.cards].slice(
+    //       cardsPerPage * (currentPage - 1),
+    //       cardsPerPage * currentPage
+    //     )
+    //     : [...currentStory.cards].slice(cardsPerPage * (currentPage - 1));
 
 //     const requestedCards = [];
 

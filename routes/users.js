@@ -7,10 +7,10 @@ const User = require("../models/user");
 
 //Register new User
 router.post('/register', async (req, res) => {
+    console.log('registering.....')
     try {
         const { username, email, firstName, lastName, password } = req.body;
         if (!password) throw new Error("Password cannot be empty");
-
         // 💡 Sneha: Check if email regex is email
 
         // 💡 Sneha: Check if username is alphanumeric, 6-12 characters
@@ -33,21 +33,23 @@ router.post('/register', async (req, res) => {
     } catch (e) {
         let errMessage = "";
         const reDup = new RegExp(/(?:duplicate)/, "g");
+        console.log(e.message)
         if (reDup.test(e.message)) {
             const reUser = new RegExp(/(?:userId_1)/, "g");
             const reEmail = new RegExp(/(?:emailId_1)/, "g");
             if (reUser.test(e.message)) errMessage = "Username already exists. Please select some other user name.";
             if (reEmail.test(e.message)) errMessage = "A Username with this email already exist.";
         }
-        const reUserValid = new RegExp(/(?:User\ validation\ failed)/, "g");
-        if (reUserValid.test(e.message)) {
+
+        else if (reUserValid.test(e.message)) {
+            const reUserValid = new RegExp(/(?:User\ validation\ failed)/, "g");
             const reNullAttr = new RegExp(/(?:userId|emailId|firstName|lastName)/, "g");
             if (reNullAttr.exec(e.message)) var nullAttr = reNullAttr.exec(e.message);
             errMessage = `${nullAttr} cannot be blank!`;
         }
         else errMessage = e.message;
         res.send(errMessage);
-        console.log(e);
+        // console.log(e);
     }
 });
 
