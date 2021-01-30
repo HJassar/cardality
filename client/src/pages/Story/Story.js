@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 
 // import { Link } from 'react-router-dom'
 
@@ -9,113 +9,108 @@ import React, { useEffect, useState } from "react";
 //   setMaxCards,
 // } from "../../redux/story/story.actions";
 
-import querystring from 'query-string'
-import axios from "axios";
+import querystring from 'query-string';
+import axios from 'axios';
 
 // import Loader from "react-loader-spinner";
 
-import "./Story.scss";
+import './Story.scss';
 
-const Story = ({ match,
-  location
-  // ,
-  // nextStoryPage,
-  // currentStoryName,
-  // currentStoryCards,
-  // addCards,
-  // changePage,
-  // setMaxCards,
-  // maxCards,
+const Story = ({
+    match,
+    location
+    // ,
+    // nextStoryPage,
+    // currentStoryName,
+    // currentStoryCards,
+    // addCards,
+    // changePage,
+    // setMaxCards,
+    // maxCards,
 }) => {
+    // Parsing the page from the router's link
+    // let parsed = ;
+    const [currentPage, setCurrentPage] = useState(
+        querystring.parse(location.search).page || 1
+    );
+    // Story Id
+    const storyId = match.params.id;
 
-  // Parsing the page from the router's link
-  // let parsed = ;
-  const [currentPage, setCurrentPage] = useState(querystring.parse(location.search).page || 1);
-  // Story Id
-  const storyId = match.params.id;
+    const [cardsData, setCardsData] = useState(undefined);
+    const [storyName, setStoryName] = useState(undefined);
+    const [pageCount, setPageCount] = useState(undefined);
 
-  const [cardsData, setCardsData] = useState(undefined);
-  const [storyName, setStoryName] = useState(undefined);
-  const [pageCount, setPageCount] = useState(undefined);
+    const [pageNav, setPageNav] = useState(undefined);
+    const navLinks = [];
 
-  const [pageNav, setPageNav] = useState(undefined)
-  const navLinks = [];
+    useEffect(() => {
+        setCardsData(undefined);
+        axios
+            .get(`/cards/fromstory/${storyId}?page=${currentPage}`)
+            .then((res) => {
+                setCardsData(res.data);
+            });
+        return () => {
+            // cleanup
+        };
+    }, [currentPage]);
 
-  useEffect(() => {
-    setCardsData(undefined);
-    axios
-      .get(`/cards/fromstory/${storyId}?page=${currentPage}`)
-      .then(res => {
-        setCardsData(res.data)
-      })
-    return () => {
-      // cleanup
-    }
-  }, [currentPage])
+    useEffect(() => {
+        axios.get(`/stories/${storyId}`).then((res) => {
+            setStoryName(res.data.name);
+            setPageCount(res.data.pageCount);
+        });
+        return () => {
+            // cleanup
+        };
+    }, []);
 
-  useEffect(() => {
-    axios
-      .get(`/stories/${storyId}`)
-      .then(res => {
-        setStoryName(res.data.name)
-        setPageCount(res.data.pageCount)
-      })
-    return () => {
-      // cleanup
-    }
-  }, [])
-
-
-  useEffect(() => {
-    if (pageCount) {
-      for (let page = 1; page <= pageCount; page++) {
-        navLinks.push(
-          <button
-            onClick={
-              () => {
-                window.history.pushState(null, null, `?page=${page}`);
-                setCurrentPage(page)
-              }
+    useEffect(() => {
+        if (pageCount) {
+            for (let page = 1; page <= pageCount; page++) {
+                navLinks.push(
+                    <button
+                        onClick={() => {
+                            window.history.pushState(
+                                null,
+                                null,
+                                `?page=${page}`
+                            );
+                            setCurrentPage(page);
+                        }}>
+                        {page}
+                    </button>
+                );
             }
-          >{page}</button>
-        )
-      }
-      setPageNav(navLinks)
-    }
-
-    return () => {
-      // cleanup
-    }
-  }, [pageCount])
-
-
-
-  return (
-    <>
-      <h2>
-        {storyName ?
-          storyName :
-          'loading Story Name'
+            setPageNav(navLinks);
         }
-      </h2>
-      {
-        cardsData ?
-          cardsData.map(card => {
-            return <li>{card.text}</li>
-          })
 
-          :
-          'Loading cards'
-      }
-      < hr />
-      {pageCount ?
-        pageNav :
-        'loading page nav'
-      }
-    </>
-  )
-}
+        return () => {
+            // cleanup
+        };
+    }, [pageCount]);
 
+    return (
+        <>
+            <h2>{storyName ? storyName : 'loading Story Name'}</h2>
+            <div className='container'>
+                <div className='story-grid'>
+                    {cardsData
+                        ? cardsData.map((card) => {
+                              return (
+                                  <div className='card'>
+                                      <li>{card.text}</li>
+                                  </div>
+                              );
+                          })
+                        : 'Loading cards'}
+                </div>
+            </div>
+            <hr />
+            {pageCount ? pageNav : 'loading page nav'}
+        </>
+    );
+};
 
 //   const pullCards = () => {
 //     setCardsLoading(true);
@@ -208,4 +203,4 @@ const Story = ({ match,
 
 // export default connect(mapStateToProps, mapDispatchToProps)(Story);
 
-export default (Story);
+export default Story;
