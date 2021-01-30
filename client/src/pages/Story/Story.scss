@@ -24,6 +24,22 @@
    
 }
 
-.Card{
-
+.container{
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+    margin: 0 auto;
 }
+.story-grid {
+    display: grid;
+    grid-gap: 1em;
+    grid-template-columns: repeat(auto-fit, minmax(15em, 1fr));
+      
+  }
+  
+  
+  .card {
+    background-color: aquamarine;
+    box-shadow: 1px 1px 5px rgba(0,0,0,.3);
+    padding: 1em;
+  }
