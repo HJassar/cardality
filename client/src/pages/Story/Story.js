@@ -69,7 +69,7 @@ const Story = ({
         if (pageCount) {
             for (let page = 1; page <= pageCount; page++) {
                 navLinks.push(
-                    <button
+                    <button class='story_three-card__button'
                         onClick={() => {
                             window.history.pushState(
                                 null,
@@ -93,21 +93,25 @@ const Story = ({
     return (
         <>
             <h2>{storyName ? storyName : 'loading Story Name'}</h2>
-            <div className='container'>
-                <div className='story-grid'>
+            <div className='story_container'>
+                <div className='story_grid'>
                     {cardsData
                         ? cardsData.map((card) => {
-                              return (
-                                  <div className='card'>
-                                      <li>{card.text}</li>
-                                  </div>
-                              );
-                          })
+                            return (
+                                <div className='story_three-card'>
+                                    <li>{card.text}</li>
+                                </div>
+                            );
+                        })
                         : 'Loading cards'}
                 </div>
             </div>
-            <hr />
-            {pageCount ? pageNav : 'loading page nav'}
+            <div class='story_pages'>
+                <hr class='story_page__hr' />
+                <div>
+                    {pageCount ? pageNav : 'loading page nav'}
+                </div>
+            </div>
         </>
     );
 };
