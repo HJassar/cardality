@@ -21,8 +21,8 @@ const Home = ({ setStoryId, setStoryName }) => {
                 setStoryArr(res.data);
             })
             .catch((err) => {
-                    setError(!error)
-                    setErrorMessage(err.response.statusText)
+                setError(!error)
+                setErrorMessage(err.response.statusText)
             });
     }, []);
 
@@ -38,25 +38,25 @@ const Home = ({ setStoryId, setStoryName }) => {
             {error ? (
                 <Error errorMessage={errorMessage} />
             ) : (
-                storyArr.map((story) => {
-                    return (
-                        <Link
-                            to={`/story/${story.storyId}`}
-                            className='story-link'>
-                            <div className='story-link-stack block'>
-                                <h2
-                                    className='story-name'
-                                    key={story.storyId}
-                                    onClick={handleClick}
-                                    data-id={story.storyId}
-                                    data-name={story.name}>
-                                    {story.name}
-                                </h2>
-                            </div>
-                        </Link>
-                    );
-                })
-            )}
+                    storyArr.map((story) => {
+                        return (
+                            <Link
+                                to={`/story/${story.storyId}`}
+                                className='story-link'>
+                                <div className='story-link-stack block story_three-card'>
+                                    <h2
+                                        className='story-name'
+                                        key={story.storyId}
+                                        onClick={handleClick}
+                                        data-id={story.storyId}
+                                        data-name={story.name}>
+                                        {story.name}
+                                    </h2>
+                                </div>
+                            </Link>
+                        );
+                    })
+                )}
         </div>
     );
 };

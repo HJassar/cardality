@@ -92,13 +92,13 @@ const Story = ({
 
     return (
         <>
-            <h2>{storyName ? storyName : 'loading Story Name'}</h2>
+            <h2 className='story_header'>{storyName ? storyName : 'loading Story Name'}</h2>
             <div className='story_container'>
                 <div className='story_grid'>
                     {cardsData
                         ? cardsData.map((card) => {
                             return (
-                                <div className='story_three-card'>
+                                <div className='story_card'>
                                     <li>{card.text}</li>
                                 </div>
                             );

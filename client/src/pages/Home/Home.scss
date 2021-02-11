@@ -3,11 +3,25 @@
 .story-link {
   text-decoration: none;
   display: block;
+
 }
 
 .story-name{
      width: fit-content;
-     display: block;
+     display: block;   
+     
 }
 
+
+div .story_three-card {
+  background-color:$surface;
+  border-radius: 10px;
+  box-shadow: 
+    -2px 1px 5px rgba(0,0,0,.3),
+    -10px 10px 1px 0px  #f1e6db,
+    -12px 11px 5px rgba(0,0,0,.3),
+    -20px 20px 1px 0px  #f1e6db,
+    -22px 21px 5px rgba(0,0,0,.3);
+     padding: 1em;
+}
 
